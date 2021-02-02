@@ -30,7 +30,7 @@ app.use('/items', itemRoutes);
 app.use('/orders', orderRoutes);
 
 // LANDING PAGE
-app.get('/', (req,res) => { res.send("Dashboard"); });
+app.get('/', (req,res) => { res.send("ELI73 :: veritas latet ultra lux <br><a href='items'>Item List</a>"); });
 
 
 app.listen(PORT, () => {console.log(`Server running on : http://${HOST}:${PORT}`)});

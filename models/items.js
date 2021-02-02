@@ -10,12 +10,14 @@ prod: {type: String},
 desc:{type: String},
 kat:{type: String},
 color:{type:String},
+gender:{type:String},
 media:[ String ],
 noten:{
     type:Object,
     kopf: [ String ],
     herz: [ String ],
-    base: [ String ]   
+    base: [ String ],
+    duftnoten: [ String ]   
 },
 variants:[{
     group: String,
