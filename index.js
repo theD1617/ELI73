@@ -14,7 +14,7 @@ import mongoose from 'mongoose';
 const app = express();
 
 mongoose.connect(
-    process.env.MONGO_URI, 
+    process.env.MONGO_ADMIN, 
     { useUnifiedTopology: true, useNewUrlParser: true }
     );
 mongoose.Promise = global.Promise;
