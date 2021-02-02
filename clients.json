@@ -1,0 +1,107 @@
+[
+    {
+        "name": "John",
+        "lname": "Doe",
+        "age": 44,
+        "logg":{
+            "nik": "JoDo",
+            "pin": "scrambled366"
+        },
+        "_social": {
+            "_email": "a@b.cd",
+            "_mobile": "4917654321",
+            "_ether": "0x123456876543234567987654123456765432"
+        },
+        "_addresses": {
+            "priv":["thistr. 32", "11223 Thatcity", "John Doe", "2. HH, 3.OG Links #224"],
+            "comp":["thatstr. 1", "11223 Thiscity", "John Doe Corp. & Sons"]
+        },
+        "_banking": {
+            "_bank": "BANK OF NOTHING",
+            "_iban": "DE81678626928777209918928927908789",
+            "_bic": "BICxx00DERT",
+            "_holder": "John Doe",
+            "_crdnr": "1111222233334444",
+            "_crddt": "02/23",
+            "_cvc": "123"
+        },
+        "orders": [
+            {
+                "id":"20210201_110945_JoDo",
+                "items":[
+                    {"code": "0001", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },
+                    {"code": "0002", "bprice": 20.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },
+                    {"code": "0003", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },                
+                    {"code": "0004", "bprice": 30.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },                
+                    {"code": "0005", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" }                                  
+                ],
+                "price":{ "start": 334.10, "bonus": 30, "total": 304.10, "tax": 59 },
+                "clientstats":{ "total":304.10, "numitems": 15, "pricetop": 30.94 , "maxitems": 15 }
+            },
+            {
+                "id":"20210201_112436_JoDo",
+                "items":[
+                    {"code": "0011", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },
+                    {"code": "0022", "bprice": 20.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },
+                    {"code": "0033", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },                
+                    {"code": "0044", "bprice": 30.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },                
+                    {"code": "0055", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" }                                  
+                ],
+                "price":{ "start": 334.10, "bonus": 30, "total": 304.10, "tax": 59 },
+                "clientstats":{ "total":608.20, "numitems": 30, "pricetop": 30.94 , "maxitems": 15}
+            }
+        ]
+    },
+    {
+        "name": "Jane",
+        "lname": "Doe",
+        "age": 33,
+        "logg":{
+            "nik": "JaDe",
+            "pin": "scrambled3665"
+        },
+        "_social": {
+            "_email": "ab@b.cd",
+            "_mobile": "4917654321",
+            "_ether": "0x123456876543234567987654123456765432"
+        },
+        "_addresses": {
+            "priv":["thistr. 32", "11223 Thatcity", "Jane Doe", "2. HH, 3.OG Links #224"]            
+        },
+        "_banking": {
+            "_bank": "BANK OF NOTHING",
+            "_iban": "DE81678626928777209918928927908789",
+            "_bic": "BICxx00DERT",
+            "_holder": "John Doe",
+            "_crdnr": "1111222233334444",
+            "_crddt": "02/23",
+            "_cvc": "123"
+        },
+        "orders": [
+            {
+                "id":"20210201_110945_JoDo",
+                "items":[
+                    {"code": "0001", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },
+                    {"code": "0002", "bprice": 20.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },
+                    {"code": "0003", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },                
+                    {"code": "0004", "bprice": 30.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },                
+                    {"code": "0005", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" }                                  
+                ],
+                "price":{ "start": 334.10, "bonus": 30, "total": 304.10, "tax": 59 },
+                "clientstats":{ "total":304.10, "numitems": 15, "pricetop": 30.94 , "maxitems": 15 }
+            },
+            {
+                "id":"20210201_112436_JoDo",
+                "items":[
+                    {"code": "0011", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },
+                    {"code": "0022", "bprice": 20.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },
+                    {"code": "0033", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },                
+                    {"code": "0044", "bprice": 30.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" },                
+                    {"code": "0055", "bprice": 10.94, "amnt": 3, "variant": 10, "tprice": 62.82, "note": "Das machen wir gerne !" }                                  
+                ],
+                "price":{ "start": 334.10, "bonus": 30, "total": 304.10, "tax": 59 },
+                "clientstats":{ "total":608.20, "numitems": 30, "pricetop": 30.94 , "maxitems": 15}
+            }
+        ]
+    }
+]
