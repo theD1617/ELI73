@@ -25,7 +25,7 @@ const HOST = "localhost"
 const PORT = process.env.PORT || 3090; 
 
 app.use(cors({
-    origin: '*.herokuapp.com'
+    origin: '*'
 }));
 app.use(bodyParser.json());
 //Client Base
