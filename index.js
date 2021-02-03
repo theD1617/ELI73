@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import clientRoutes from './routes/clients.js';
 import itemRoutes from './routes/items.js';
@@ -23,6 +24,9 @@ mongoose.Promise = global.Promise;
 const HOST = "localhost"
 const PORT = process.env.PORT || 3090; 
 
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
 app.use(bodyParser.json());
 //Client Base
 app.use('/clients', clientRoutes);
