@@ -1,45 +1,116 @@
 import express from 'express';
 import { v4 as uuidv4 } from "uuid";
 import Client from '../models/clients.js';
+import regValidation from './regValidation.js';
+import logValidation from './logValidation.js';
+import verify from './verify.js';
+
+import Cryptr from 'cryptr';
+import crypto from 'crypto';
+
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
+const cryptr = new Cryptr(process.env.SAFE_CRYPTR);
+
+
+
 
 // GET ALL Clients
-router.get('/',(req,res) => {
+router.get('/list/',verify ,(req,res) => {
     Client.find({}).then(function(clients){
         res.send(clients);
     }).catch();
 } );
-// GET CLIENT BY ID
-router.get('/:_id',(req, res) => {
+
+// GET CLIENT BY ID //
+router.get('/one/:_id',verify,(req, res) => {
     Client.findOne({_id: req.params._id}).then(client => {
         if(!client) return res.status(404).end();
-        return res.status(200).json(client);
+        const name = cryptr.decrypt(client.name)+' '+cryptr.decrypt(client.lname);
+        const email = cryptr.decrypt(client._social._email);
+        return res.status(200).json(client.nik+' '+client.age+' '+ name +' '+email);
     });   
 });
 // ADD NEW CLIENT
-router.post("/", (req, res) => {
-    let client = new Client(req.body);
-    client.save();
-    //Client.create(req.body).then(function(client){ });
-    
-    res.send(client);
+router.post("/sign", async (req, res) => {
+        const {error} = regValidation(req.body);
+        if(error) return res.status(400).send(error.details[0].message); 
+        // DATA VALIDATED
+        const hashPin = await crypto.createHash('md5').update(req.body.pin).digest('hex');   
+        const hashMail = await crypto.createHash('md5').update(req.body._social._email).digest('hex');               
+        const hashMobile = await crypto.createHash('md5').update(req.body._social._mobile).digest('hex');
+         // md5 hashes
+        Client.findOne({nik: req.body.nik}).then(exists => { // look for nik ===
+            //console.log(exists);
+            if(exists) return res.status(404).send(`Nikname ${exists.nik} already exists`);
+                // Name DOESNT EXIST
+                
+            if(req.body._social._email) {
+                Client.findOne({_ehash: hashMail}).then(nexists => { // look for ehash ===
+                    //console.log(nexists);
+                    if(nexists) return res.status(404).send(`Email ${req.body._social._email} already exists`); 
+            if(req.body._social._mobile) {
+                Client.findOne({_mhash: hashMobile}).then(mexists => { // look for ehash ===
+                    //console.log(mexists);
+                    if(mexists) return res.status(404).send(`Mobile ${req.body._social._mobile} already exists`); 
+
+
+                    const client = new Client({
+                        name: cryptr.encrypt(req.body.name),
+                        lname: cryptr.encrypt(req.body.lname),
+                        age: req.body.age,
+                        
+                            nik: req.body.nik,
+                            pin: hashPin,
+                            _ehash: hashMail,
+                            _mhash: hashMobile,
+                            role: "ipb", // (i/a/f/v)in/active/factor/vector (p/o/e/m)pub online eth mobile (b/w/r/s) basic webby root sys
+                        
+                        _social:{
+                            _email: cryptr.encrypt(req.body._social._email),
+                            _mobile: cryptr.encrypt(req.body._social._mobile),
+                            _ether: req.body._social._ether
+                        },
+                        _addresses:{
+                            priv:[],
+                            comp:{}
+                        },
+                        _banking:{},
+                        _orders:{}
+                    });        
+                    client.save();    
+                    res.send(client);
+                });}});
+            }
+            
+        });    
+});
+// LOG IN EXISTING CLIENT
+router.post("/log", async (req, res) => {
+    const {error} = logValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+    const hashPin = await crypto.createHash('md5').update(req.body.pin).digest('hex');   
+    Client.findOne({nik: req.body.nik}).then(client => { // look for nik ===
+        //console.log(client);
+        if(!client) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
+        if(client.pin !== hashPin) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
+        const token = jwt.sign({_id: client._id,nik: client.nik, role: client.role},process.env.SAFE_CRYPTR);
+        res.header('auth-token', token).status(200).send(token);
+});
 });
 // EDIT CLIENT BY ID
-router.put("/:_id",(req, res) => {
+router.put("/edit/:_id", verify, (req, res) => {
     Client.findOne({_id: req.params._id}, function(err, client) {
         if(err) { 
-            console.log(err);
+            console.log(err);  
             res.status(500).send("500 error dead");
         } else {
             if(!client) {
                 res.status(404).send("400 dead");
             } else {
-                if(req.body.name) client.name = req.body.name;
-                if(req.body.lname) client.lname = req.body.lname;
-                if(req.body.age) client.age = req.body.age;
-                if(req.body.logg.nik) client.logg.nik = req.body.logg.nik;
-                if(req.body.logg.pin) client.logg.pin = req.body.logg.pin;
+                if(req.body.nik) client.nik = req.body.nik;
+                if(req.body.pin) client.pin = req.body.pin;
                 if(req.body._social._email) client._social._email = req.body._social._email;
                 if(req.body._social._mobile) client._social._mobile = req.body._social._mobile;
                 if(req.body._addresses.priv) client._addresses.priv = req.body._addresses.priv;
@@ -68,7 +139,7 @@ router.put("/:_id",(req, res) => {
     });    
 });
 // DELETE CLIENT BY ID
-router.delete('/delete/:_id', (req, res) => {
+router.delete('/delete/:_id', verify, (req, res) => {
     Client.findOneAndDelete({_id: req.params._id}).then(client => {
         if(!client) return res.status(404).end();
         return res.status(200).send(`User ${req.params._id} deleted`);

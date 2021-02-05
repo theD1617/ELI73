@@ -5,38 +5,64 @@ const Schema = mongoose.Schema;
 const ClientSchema = new Schema({
 name: {
     type: String,
-    required:[true,"required field"]
+    required:[true,"required field"],
+    max: 1024
 },
 lname: {
     type: String,
-    required:[true,"required field"]
+    required:[true,"required field"],
+    max: 1024
 },
 age: {
     type: Number,
-    required:[true,"required field"]
+    required:[true,"required field"],
+    max: 1024
 },
-logg: {
-    type: Object,
+
     nik: {
         type: String,
-        required:[true,"required field"]
+        required:false,
+        min: 6,
+        max: 25
     },
     pin: {
         type: String,
-        required:[true,"required field"]
-    }    
-},
+        required:[true,"required field"],
+        max: 1024
+    },
+    role: {
+        type: String,
+        required:[true,"required field"],
+        max: 9
+    },
+    _ehash:{
+        type: String,
+        required:false,
+        max: 1024
+    },
+    _mhash:{
+        type: String,
+        required:false,
+        max: 1024
+    },
 _social: {
     type: Object,
     _email:{
         type: String,
-        required:[true,"required field"]
+        required:false,
+        max: 1024
     },
+  
     _mobile:{
         type: String,
+        required:false,
+        max: 1024
+
     },
     _ether:{
         type: String,
+        required:false,
+        max: 1024
     }
 },
 _addresses:{
