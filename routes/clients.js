@@ -17,7 +17,7 @@ const cryptr = new Cryptr(process.env.SAFE_CRYPTR);
 
 
 // GET ALL Clients
-router.get('/list/',verify ,(req,res) => {
+router.get('/list/' ,(req,res) => {
     Client.find({}).then(function(clients){
         res.send(clients);
     }).catch();
