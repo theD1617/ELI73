@@ -24,11 +24,7 @@ mongoose.Promise = global.Promise;
 const HOST = "localhost"
 const PORT = process.env.PORT || 3090; 
 app.use(cors());
-app.use(function(req, res, next) {
-res.header("Access-Control-Allow-Origin", "*");
-res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-next();
-});
+
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
     res.header('X-XSS-Protection', 0);
