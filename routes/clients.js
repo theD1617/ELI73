@@ -24,7 +24,7 @@ router.get('/list/',(req,res) => {
 } );
 
 // GET CLIENT BY ID //
-router.get('/one/:_id',verify,(req, res) => {
+router.get('/one/:_id',(req, res) => {
     Client.findOne({_id: req.params._id}).then(client => {
         if(!client) return res.status(404).end();
         const name = cryptr.decrypt(client.name)+' '+cryptr.decrypt(client.lname);
