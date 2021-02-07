@@ -26,19 +26,10 @@ const PORT = process.env.PORT || 3090;
 
 app.use(bodyParser.json());
 
-var whitelist = ['*']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+
 
 // Then pass them to cors:
-app.use(cors(corsOptions));
+app.use(cors());
 //Client Base
 app.use('/clients', clientRoutes);
 app.use('/items',  itemRoutes);
