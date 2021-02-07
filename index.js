@@ -25,7 +25,20 @@ const HOST = "localhost"
 const PORT = process.env.PORT || 3090; 
 
 app.use(bodyParser.json());
-app.use(cors({origin:'*'}));
+
+var whitelist = ['*', 'https://s47el173.herokuapp.com']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+// Then pass them to cors:
+app.use(cors(corsOptions));
 //Client Base
 app.use('/clients', clientRoutes);
 app.use('/items',  itemRoutes);
