@@ -26,7 +26,7 @@ const PORT = process.env.PORT || 3090;
 
 app.use(bodyParser.json());
 
-var whitelist = ['*', 'https://s47el173.herokuapp.com']
+var whitelist = ['*']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
