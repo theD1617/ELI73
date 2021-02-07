@@ -23,7 +23,7 @@ mongoose.Promise = global.Promise;
 
 const HOST = "localhost"
 const PORT = process.env.PORT || 3090; 
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
     res.header('X-XSS-Protection', 0);
@@ -36,7 +36,7 @@ app.use('/clients', clientRoutes);
 app.use('/items',  itemRoutes);
 app.use('/orders', orderRoutes);
 
-app.use(cors());
+
 
 
 // LANDING PAGE
