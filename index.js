@@ -23,7 +23,7 @@ mongoose.Promise = global.Promise;
 
 const HOST = "localhost"
 const PORT = process.env.PORT || 3090; 
-const whitelist = ['http://localhost:3000', 'https://s47el173.herokuapp.com/']
+const whitelist = ['http://localhost:3000', 'https://s47el173.herokuapp.com/', "*"]
 
 app.use(cors({
   origin: function(origin, callback){
