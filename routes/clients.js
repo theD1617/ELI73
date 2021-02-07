@@ -96,7 +96,7 @@ router.post("/log", async (req, res) => {
         if(!client) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
         if(client.pin !== hashPin) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
         const token = jwt.sign({_id: client._id,nik: client.nik, role: client.role},process.env.SAFE_CRYPTR);
-        res.header('auth-token', token).status(200).send(token);
+        res.header('auth-token', token).status(200).send(token, client);
 });
 });
 // EDIT CLIENT BY ID
