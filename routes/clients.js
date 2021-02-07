@@ -17,14 +17,14 @@ const router = express.Router();
 const cryptr = new Cryptr(process.env.SAFE_CRYPTR);
 
 // GET ALL Clients
-router.get('/list',(req,res) => {
+router.get('/list/',(req,res) => {
     Client.find({}).then(function(clients){
         res.send(clients);
     }).catch();
 } );
 
 // GET CLIENT BY ID //
-        router.get('/one/:_id',(req, res) => {
+router.get('/one/:_id',verify,(req, res) => {
     Client.findOne({_id: req.params._id}).then(client => {
         if(!client) return res.status(404).end();
         const name = cryptr.decrypt(client.name)+' '+cryptr.decrypt(client.lname);
@@ -33,7 +33,7 @@ router.get('/list',(req,res) => {
     });   
 });
 // ADD NEW CLIENT
-router.post("/sign", async (req, res) => {
+router.post("/sign",cors(), async (req, res) => {
         const {error} = regValidation(req.body);
         if(error) return res.status(400).send(error.details[0].message); 
         // DATA VALIDATED
@@ -80,15 +80,14 @@ router.post("/sign", async (req, res) => {
                         _orders:{}
                     });        
                     client.save();    
-                    res.status(200).send(client);
+                    res.send(client);
                 });}});
             }
             
         });    
 });
 // LOG IN EXISTING CLIENT
-router.post("/log", async (req, res) => {
-    
+router.post("/log",cors(), async (req, res) => {
     const {error} = logValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
     const hashPin = await crypto.createHash('md5').update(req.body.pin).digest('hex');   
@@ -97,13 +96,12 @@ router.post("/log", async (req, res) => {
         if(!client) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
         if(client.pin !== hashPin) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
         const token = jwt.sign({_id: client._id,nik: client.nik, role: client.role},process.env.SAFE_CRYPTR);
-        res.header("auth-token", token).status(200).send(token,client);
-
+        res.header('auth-token', token).status(200).send(token);
 });
 });
 // EDIT CLIENT BY ID
-router.put("/edit/:_id", verify, async (req, res) => {
-      Client.findOne({_id: req.params._id}, function(err, client) {
+router.put("/edit/:_id", verify, (req, res) => {
+    Client.findOne({_id: req.params._id}, function(err, client) {
         if(err) { 
             console.log(err);  
             res.status(500).send("500 error dead");
@@ -141,7 +139,7 @@ router.put("/edit/:_id", verify, async (req, res) => {
     });    
 });
 // DELETE CLIENT BY ID
-router.delete('/delete/:_id', verify, async (req, res) => {
+router.delete('/delete/:_id', verify, (req, res) => {
     Client.findOneAndDelete({_id: req.params._id}).then(client => {
         if(!client) return res.status(404).end();
         return res.status(200).send(`User ${req.params._id} deleted`);
