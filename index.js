@@ -28,15 +28,15 @@ var corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
-
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 //Client Base
-app.use('/clients', cors(corsOptions), clientRoutes);
-app.use('/items', cors(corsOptions), itemRoutes);
-app.use('/orders', cors(corsOptions), orderRoutes);
+app.use('/clients', clientRoutes);
+app.use('/items',  itemRoutes);
+app.use('/orders', orderRoutes);
 
 // LANDING PAGE
-app.get('/', cors(corsOptions), (req,res) => { res.send("ELI73 :: veritas latet ultra lux <br><a href='items'>Item List</a>"); });
+app.get('/', (req,res) => { res.send("ELI73 :: veritas latet ultra lux <br><a href='items'>Item List</a>"); });
 
 
 app.listen(PORT, () => {console.log(`Server running on : http://${HOST}:${PORT}`)});

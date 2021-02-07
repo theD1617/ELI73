@@ -14,17 +14,18 @@ const router = express.Router();
 const cryptr = new Cryptr(process.env.SAFE_CRYPTR);
 
 
+const config = {headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}};
 
 
 // GET ALL Clients
-router.get('/list/' ,(req,res) => {
+router.get('/list/', config, (req,res) => {
     Client.find({}).then(function(clients){
         res.send(clients);
     }).catch();
 } );
 
 // GET CLIENT BY ID //
-router.get('/one/:_id',verify,(req, res) => {
+router.get('/one/:_id', config,verify,(req, res) => {
     Client.findOne({_id: req.params._id}).then(client => {
         if(!client) return res.status(404).end();
         const name = cryptr.decrypt(client.name)+' '+cryptr.decrypt(client.lname);
@@ -33,7 +34,7 @@ router.get('/one/:_id',verify,(req, res) => {
     });   
 });
 // ADD NEW CLIENT
-router.post("/sign", async (req, res) => {
+router.post("/sign", config, async (req, res) => {
         const {error} = regValidation(req.body);
         if(error) return res.status(400).send(error.details[0].message); 
         // DATA VALIDATED
@@ -87,7 +88,7 @@ router.post("/sign", async (req, res) => {
         });    
 });
 // LOG IN EXISTING CLIENT
-router.post("/log", async (req, res) => {
+router.post("/log", config, async (req, res) => {
     const {error} = logValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
     const hashPin = await crypto.createHash('md5').update(req.body.pin).digest('hex');   
@@ -100,7 +101,7 @@ router.post("/log", async (req, res) => {
 });
 });
 // EDIT CLIENT BY ID
-router.put("/edit/:_id", verify, (req, res) => {
+router.put("/edit/:_id", config, verify, (req, res) => {
     Client.findOne({_id: req.params._id}, function(err, client) {
         if(err) { 
             console.log(err);  
@@ -139,7 +140,7 @@ router.put("/edit/:_id", verify, (req, res) => {
     });    
 });
 // DELETE CLIENT BY ID
-router.delete('/delete/:_id', verify, (req, res) => {
+router.delete('/delete/:_id', config, verify, (req, res) => {
     Client.findOneAndDelete({_id: req.params._id}).then(client => {
         if(!client) return res.status(404).end();
         return res.status(200).send(`User ${req.params._id} deleted`);
