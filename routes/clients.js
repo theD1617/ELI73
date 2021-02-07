@@ -25,8 +25,6 @@ router.get('/list',(req,res) => {
 
 // GET CLIENT BY ID //
         router.get('/one/:_id',(req, res) => {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     Client.findOne({_id: req.params._id}).then(client => {
         if(!client) return res.status(404).end();
         const name = cryptr.decrypt(client.name)+' '+cryptr.decrypt(client.lname);
@@ -36,8 +34,6 @@ router.get('/list',(req,res) => {
 });
 // ADD NEW CLIENT
 router.post("/sign", async (req, res) => {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         const {error} = regValidation(req.body);
         if(error) return res.status(400).send(error.details[0].message); 
         // DATA VALIDATED
@@ -101,15 +97,13 @@ router.post("/log", async (req, res) => {
         if(!client) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
         if(client.pin !== hashPin) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
         const token = jwt.sign({_id: client._id,nik: client.nik, role: client.role},process.env.SAFE_CRYPTR);
-        res.header({'auth-token': token, "Access-Control-Allow-Origin": "*","Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept"}).status(200).send(token,client);
+        res.header("auth-token", token).status(200).send(token,client);
 
 });
 });
 // EDIT CLIENT BY ID
 router.put("/edit/:_id", verify, async (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    Client.findOne({_id: req.params._id}, function(err, client) {
+      Client.findOne({_id: req.params._id}, function(err, client) {
         if(err) { 
             console.log(err);  
             res.status(500).send("500 error dead");
@@ -148,8 +142,6 @@ router.put("/edit/:_id", verify, async (req, res) => {
 });
 // DELETE CLIENT BY ID
 router.delete('/delete/:_id', verify, async (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     Client.findOneAndDelete({_id: req.params._id}).then(client => {
         if(!client) return res.status(404).end();
         return res.status(200).send(`User ${req.params._id} deleted`);

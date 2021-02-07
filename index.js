@@ -25,6 +25,11 @@ const HOST = "localhost"
 const PORT = process.env.PORT || 3090; 
 const whitelist = ['http://localhost:3000', 'https://s47el173.herokuapp.com/', "*"]
 
+
+
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json());
+
 app.use(cors({
   origin: function(origin, callback){
     // allow requests with no origin 
@@ -38,11 +43,6 @@ app.use(cors({
   }
 }));
 
-app.use(bodyParser.json());
-app.use(function(req, res, next) {
-    res.header('X-XSS-Protection', 0);
-    next();
-});
 // Then pass them to cors:
 
 //Client Base
