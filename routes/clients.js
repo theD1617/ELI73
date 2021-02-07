@@ -33,7 +33,7 @@ router.get('/one/:_id',verify,(req, res) => {
     });   
 });
 // ADD NEW CLIENT
-router.post("/sign",cors(), async (req, res) => {
+router.post("/sign", async (req, res) => {
         const {error} = regValidation(req.body);
         if(error) return res.status(400).send(error.details[0].message); 
         // DATA VALIDATED
@@ -87,7 +87,7 @@ router.post("/sign",cors(), async (req, res) => {
         });    
 });
 // LOG IN EXISTING CLIENT
-router.post("/log",cors(), async (req, res) => {
+router.post("/log", async (req, res) => {
     const {error} = logValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
     const hashPin = await crypto.createHash('md5').update(req.body.pin).digest('hex');   
