@@ -17,7 +17,7 @@ const router = express.Router();
 const cryptr = new Cryptr(process.env.SAFE_CRYPTR);
 
 // GET ALL Clients
-router.get('/list/',(req,res) => {
+router.get('/list',(req,res) => {
     Client.find({}).then(function(clients){
         res.send(clients);
     }).catch();
@@ -80,7 +80,7 @@ router.post("/sign", async (req, res) => {
                         _orders:{}
                     });        
                     client.save();    
-                    res.send(client);
+                    res.status(200).send(client);
                 });}});
             }
             
