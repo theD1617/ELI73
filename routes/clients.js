@@ -33,7 +33,7 @@ router.get('/one/:_id',(req, res) => {
     });   
 });
 // ADD NEW CLIENT
-router.post("/sign", async, cors(), (req, res) => {
+router.post("/sign", async (req, res) => {
         const {error} = regValidation(req.body);
         if(error) return res.status(400).send(error.details[0].message); 
         // DATA VALIDATED
