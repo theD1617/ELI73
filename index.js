@@ -25,15 +25,19 @@ const HOST = "localhost"
 const PORT = process.env.PORT || 3090; 
 
 app.use(bodyParser.json());
-
-
-
+app.use(function(req, res, next) {
+    res.header('X-XSS-Protection', 0);
+    next();
+});
 // Then pass them to cors:
-app.use(cors());
+
 //Client Base
 app.use('/clients', clientRoutes);
 app.use('/items',  itemRoutes);
 app.use('/orders', orderRoutes);
+
+app.use(cors());
+
 
 // LANDING PAGE
 app.get('/', (req,res) => { res.send("ELI73 :: veritas latet ultra lux <br><a href='items'>Item List</a>"); });
