@@ -4,8 +4,6 @@ import Client from '../models/clients.js';
 import regValidation from './regValidation.js';
 import logValidation from './logValidation.js';
 import verify from './verify.js';
-import cors from 'cors';
-
 
 import Cryptr from 'cryptr';
 import crypto from 'crypto';
@@ -29,7 +27,7 @@ router.get('/one/:_id',verify,(req, res) => {
         if(!client) return res.status(404).end();
         const name = cryptr.decrypt(client.name)+' '+cryptr.decrypt(client.lname);
         const email = cryptr.decrypt(client._social._email);
-        return res.status(200).json(client.nik+' '+client.age+' '+ name +' '+email);
+        return res.status(200).send(client.nik+' '+client.age+' '+ name +' '+email);
     });   
 });
 // ADD NEW CLIENT
@@ -96,7 +94,7 @@ router.post("/log", async (req, res) => {
         if(!client) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
         if(client.pin !== hashPin) return res.status(404).send(`Nikname ${req.body.nik} doesnt exists and/or Pins do not match`);
         const token = jwt.sign({_id: client._id,nik: client.nik, role: client.role},process.env.SAFE_CRYPTR);
-        res.header('auth-token', token).status(200).send(token);
+        res.header('auth-token', token).status(200).json({token,client);
 });
 });
 // EDIT CLIENT BY ID
