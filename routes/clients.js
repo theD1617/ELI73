@@ -153,8 +153,9 @@ router.delete('/delete/:_id', verify, (req, res) => {
 router.get('/auth', verify, (req, res) => {
     Client.findById(req.client._id)
         .select('-pin')
-        .then(client => res.jsom(client));
-}).catch(err => next(err));
+        .then(client => res.jsom(client))
+        .catch(err => next(err));
+});
 
 export default router;
 
