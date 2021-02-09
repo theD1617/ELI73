@@ -31,7 +31,7 @@ router.get('/one/:_id', verify, (req, res) => {
         if (!client) return res.status(404).end();
         const name = cryptr.decrypt(client.name) + ' ' + cryptr.decrypt(client.lname);
         const email = cryptr.decrypt(client._social._email);
-        return res.status(200).send(client.nik, client.age, name, email);
+        return res.status(200).json(client.nik, client.age, name, email);
     });
 });
 // @route   POST clients/sign
@@ -157,7 +157,7 @@ router.delete('/delete/:_id', verify, (req, res) => {
     Client.findOneAndDelete({ _id: req.params._id }).then(client => {
         if (!client) return res.status(404).end();
         return res.status(200).send(`User ${req.params._id} deleted`);
-    }).catch(err => err => res.status(401).send(err));
+    }).catch(err => res.status(401).send(err));
 });
 
 // @route   GET clients/auth
