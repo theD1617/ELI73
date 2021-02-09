@@ -115,7 +115,7 @@ router.put("/edit/:_id", verify, (req, res) => {
     Client.findOne({ _id: req.params._id }, function (err, client) {
         if (err) {
             console.log(err);
-            res.status(500).send("500 error dead");
+            res.status(500).send(err + "500 error dead");
         } else {
             if (!client) {
                 res.status(404).send("400 dead");
@@ -157,7 +157,7 @@ router.delete('/delete/:_id', verify, (req, res) => {
     Client.findOneAndDelete({ _id: req.params._id }).then(client => {
         if (!client) return res.status(404).end();
         return res.status(200).send(`User ${req.params._id} deleted`);
-    }).catch(err => next(err));
+    }).catch(err => err => res.status(401).send(err + 'access denied'));
 });
 
 // @route   GET clients/auth
@@ -167,7 +167,7 @@ router.get('/auth', verify, (req, res) => {
     Client.findById(req.client._id)
         .select('-pin')
         .then(client => res.jsom(client));
-})
+}).catch(err => res.status(401).send(err + 'access denied'))
 
 
 export default router;
