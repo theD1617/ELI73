@@ -20,7 +20,7 @@ const cryptr = new Cryptr(process.env.SAFE_CRYPTR);
 router.get('/list/', verify, (req, res) => {
     Client.find({}).then(function (clients) {
         res.send(clients);
-    }).catch(err => res.status(401).send('access denied'));
+    }).catch(err => next(err));
 });
 
 // @route   GET clients/one/:_id
@@ -107,7 +107,8 @@ router.post("/log", async (req, res) => {
         const ret = { token, client };
         res.header('auth-token', token).status(200).json(ret);
     });
-}).catch(err => res.status(401).send('access denied'));
+}).catch(err => next(err));
+
 // @route   PUT clients/edit/:_id
 // @action  PUT Edit Client Data
 // @access  PRIVATE PUT
@@ -157,7 +158,7 @@ router.delete('/delete/:_id', verify, (req, res) => {
     Client.findOneAndDelete({ _id: req.params._id }).then(client => {
         if (!client) return res.status(404).end();
         return res.status(200).send(`User ${req.params._id} deleted`);
-    }).catch(err => res.status(401).send(err));
+    }).catch(err => next(err));
 });
 
 // @route   GET clients/auth
@@ -167,7 +168,7 @@ router.get('/auth', verify, (req, res) => {
     Client.findById(req.client._id)
         .select('-pin')
         .then(client => res.jsom(client));
-}).catch(err => res.status(401).send('access denied'));
+}).catch(err => next('access denied'));
 
 
 export default router;
