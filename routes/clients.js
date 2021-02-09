@@ -31,7 +31,7 @@ router.get('/one/:_id', verify, (req, res) => {
         if (!client) return res.status(404).end();
         const name = cryptr.decrypt(client.name) + ' ' + cryptr.decrypt(client.lname);
         const email = cryptr.decrypt(client._social._email);
-        return res.status(200).json(client.nik, client.age, name, email);
+        return res.status(200).json({ nik: client.nik, age: client.age, name, email });
     });
 });
 // @route   POST clients/sign
