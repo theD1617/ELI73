@@ -154,7 +154,7 @@ router.get('/auth', verify, (req, res) => {
     Client.findById(req.client._id)
         .select('-pin')
         .then(client => res.jsom(client))
-        .catch(err => res.status(401).send('access denied'));
+        .catch(err => res.status(401).send(req.client + 'access denied'));
 });
 
 export default router;
