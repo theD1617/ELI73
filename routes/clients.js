@@ -14,18 +14,14 @@ import jwt from 'jsonwebtoken';
 const router = express.Router();
 const cryptr = new Cryptr(process.env.SAFE_CRYPTR);
 
-// @route   GET clients/list/:_id
-// @action  GET List All Client Data
-// @access  PRIVATE GET
-router.get('/list/', verify, (req, res) => {
+// GET ALL Clients
+router.get('/list/', (req, res) => {
     Client.find({}).then(function (clients) {
         res.send(clients);
-    }).catch(err => next(err));
+    }).catch();
 });
 
-// @route   GET clients/one/:_id
-// @action  GET Client by ID
-// @access  PRIVATE GET
+// GET CLIENT BY ID //
 router.get('/one/:_id', verify, (req, res) => {
     Client.findOne({ _id: req.params._id }).then(client => {
         if (!client) return res.status(404).end();
@@ -34,9 +30,7 @@ router.get('/one/:_id', verify, (req, res) => {
         return res.status(200).json(client.nik, client.age, name, email);
     });
 });
-// @route   POST clients/sign
-// @action  POST Create New Client Data
-// @access  PUBLIC POST
+// ADD NEW CLIENT
 router.post("/sign", async (req, res) => {
     const { error } = regValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -92,9 +86,7 @@ router.post("/sign", async (req, res) => {
 
     });
 });
-// @route   POST clients/log
-// @action  POST Send Client Log Data
-// @access  PUBLIC POST ASYNC
+// LOG IN EXISTING CLIENT
 router.post("/log", async (req, res) => {
     const { error } = logValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -107,16 +99,13 @@ router.post("/log", async (req, res) => {
         const ret = { token, client };
         res.header('auth-token', token).status(200).json(ret);
     });
-}).catch(err => next(err));
-
-// @route   PUT clients/edit/:_id
-// @action  PUT Edit Client Data
-// @access  PRIVATE PUT
+});
+// EDIT CLIENT BY ID
 router.put("/edit/:_id", verify, (req, res) => {
     Client.findOne({ _id: req.params._id }, function (err, client) {
         if (err) {
             console.log(err);
-            res.status(500).send(err + "500 error dead");
+            res.status(500).send("500 error dead");
         } else {
             if (!client) {
                 res.status(404).send("400 dead");
@@ -150,25 +139,12 @@ router.put("/edit/:_id", verify, (req, res) => {
         }
     });
 });
-
-// @route   DELETE clients/delete/:_id
-// @action  DELETE Client by ID
-// @access  PRIVATE DELETE
+// DELETE CLIENT BY ID
 router.delete('/delete/:_id', verify, (req, res) => {
     Client.findOneAndDelete({ _id: req.params._id }).then(client => {
         if (!client) return res.status(404).end();
         return res.status(200).send(`User ${req.params._id} deleted`);
     }).catch(err => next(err));
 });
-
-// @route   GET clients/auth
-// @action  GET Client Data
-// @access  PRIVATE GET
-router.get('/auth', verify, (req, res) => {
-    Client.findById(req.client._id)
-        .select('-pin')
-        .then(client => res.jsom(client));
-}).catch(err => next('access denied'));
-
 
 export default router;
