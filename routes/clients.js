@@ -9,7 +9,6 @@ import Cryptr from 'cryptr';
 import crypto from 'crypto';
 
 import jwt from 'jsonwebtoken';
-import { send } from 'process';
 
 
 const router = express.Router();
@@ -148,7 +147,6 @@ router.delete('/delete/:_id', verify, (req, res) => {
     }).catch(err => next(err));
 });
 
-
 // @route   GET clients/auth
 // @action  GET Client Data
 // @access  PRIVATE GET
@@ -156,7 +154,7 @@ router.get('/auth', verify, (req, res) => {
     Client.findById(req.client._id)
         .select('-pin')
         .then(client => res.jsom(client));
-}).catch(err => res.status(404).send(err));
-
+});
 
 export default router;
+
