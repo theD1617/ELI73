@@ -14,14 +14,18 @@ import jwt from 'jsonwebtoken';
 const router = express.Router();
 const cryptr = new Cryptr(process.env.SAFE_CRYPTR);
 
-// GET ALL Clients
+// @route   GET clients/list
+// @action  GET Client Data
+// @access  PRIVATE GET
 router.get('/list/', (req, res) => {
     Client.find({}).then(function (clients) {
         res.send(clients);
     }).catch();
 });
 
-// GET CLIENT BY ID //
+// @route   GET clients/one/:_id
+// @action  GET Client Data
+// @access  PRIVATE GET
 router.get('/one/:_id', verify, (req, res) => {
     Client.findOne({ _id: req.params._id }).then(client => {
         if (!client) return res.status(404).end();
@@ -30,7 +34,9 @@ router.get('/one/:_id', verify, (req, res) => {
         return res.status(200).json(client.nik, client.age, name, email);
     });
 });
-// ADD NEW CLIENT
+// @route   POST clients/sign
+// @action  POST Client Data
+// @access  PUBLIC POST
 router.post("/sign", async (req, res) => {
     const { error } = regValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -86,7 +92,9 @@ router.post("/sign", async (req, res) => {
 
     });
 });
-// LOG IN EXISTING CLIENT
+// @route   POST clients/log
+// @action  POST Client Data
+// @access  PUBLIC POST
 router.post("/log", async (req, res) => {
     const { error } = logValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -100,7 +108,9 @@ router.post("/log", async (req, res) => {
         res.header('auth-token', token).status(200).json(ret);
     });
 });
-// EDIT CLIENT BY ID
+// @route   PUT clients/edit/:_id
+// @action  PUT Client Data
+// @access  PRIVATE PUT
 router.put("/edit/:_id", verify, (req, res) => {
     Client.findOne({ _id: req.params._id }, function (err, client) {
         if (err) {
@@ -139,7 +149,9 @@ router.put("/edit/:_id", verify, (req, res) => {
         }
     });
 });
-// DELETE CLIENT BY ID
+// @route   DELETE clients/delete/:_id
+// @action  DELETE Client Data
+// @access  PRIVATE DELETE
 router.delete('/delete/:_id', verify, (req, res) => {
     Client.findOneAndDelete({ _id: req.params._id }).then(client => {
         if (!client) return res.status(404).end();

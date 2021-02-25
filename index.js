@@ -15,26 +15,26 @@ import mongoose from 'mongoose';
 const app = express();
 
 mongoose.connect(
-    process.env.MONGO_ADMIN, 
+    process.env.MONGO_ADMIN,
     { useUnifiedTopology: true, useNewUrlParser: true }
-    );
+);
 mongoose.Promise = global.Promise;
 
 
-const HOST = "localhost"
-const PORT = process.env.PORT || 3090; 
+const HOST = process.env.SITE_HOST || "http://localhost";
+const PORT = process.env.PORT || 3090;
 
 app.use(bodyParser.json());
 app.use(cors());
 //Client Base
 app.use('/clients', clientRoutes);
-app.use('/items',  itemRoutes);
+app.use('/items', itemRoutes);
 app.use('/orders', orderRoutes);
 
 // LANDING PAGE
-app.get('/', (req,res) => { res.send("ELI73 :: veritas latet ultra lux <br><a href='items'>Item List</a>"); });
+app.get('/', (req, res) => { res.send("ELI73 :: veritas latet ultra lux <br><a href='items'>Item List</a>"); });
 
 
-app.listen(PORT, () => {console.log(`Server running on : http://${HOST}:${PORT}`)});
+app.listen(PORT, () => { console.log(`Server running on : ${HOST}:${PORT}`) });
 
 
